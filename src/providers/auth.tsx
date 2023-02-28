@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { User } from "../types/user";
 
-export const AuthContext = React.createContext<{ user: User | null; setUser: (value: any) => void }>({ user: null, setUser: () => null });
+export const AuthContext = React.createContext
+  <{ user: User | null; setUser: (value: any) => void; handleLogout: () => void; }>({ user: null, setUser: () => null, handleLogout: () => null });
 
 interface Props {
   children: React.ReactNode;
@@ -9,6 +10,11 @@ interface Props {
 
 export const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<User | null>(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+  };
 
   useEffect(() => {
     const userStorage = localStorage.getItem("user");
@@ -20,7 +26,7 @@ export const AuthProvider = ({ children }: Props) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, handleLogout }}>
       {children}
     </AuthContext.Provider>
   );
