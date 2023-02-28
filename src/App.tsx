@@ -1,8 +1,9 @@
 import { Route, Routes } from 'react-router'
 import { BrowserRouter, Navigate } from 'react-router-dom'
-import { Flex } from './components/Flex'
-import Home from './components/Home/Home';
-import Login from './components/Login'
+import { CreateMangas } from './pages/Admin/AddManga';
+import { Home } from './pages/Home/Home';
+import Login from './pages/Login/Login'
+import Signup from './pages/Signup/Signup';
 import { useAuth } from './providers/auth';
 
 export type ProtectedRouteProps = {
@@ -24,11 +25,16 @@ export const ProtectedRoute = ({
 function App() {
   const { user } = useAuth()
 
-  console.log(user)
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/panel' element={
+          <ProtectedRoute isAuthenticated={user?.role === 'admin'}>
+            <CreateMangas />
+          </ProtectedRoute>
+        } />
         <Route path='/home' element={
           <ProtectedRoute isAuthenticated={!!user}>
             <Home />
