@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../../providers/auth";
 import { Flex } from "../../components/Flex";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
@@ -7,33 +6,32 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InferType } from "yup";
 import { schema } from "./schema";
+import { SubmitHandler } from "react-hook-form/dist/types";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../utils/firebaseUtils";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type IFormValues = InferType<typeof schema>;
 
 const Login = () => {
-
   const navigate = useNavigate()
-  const [input, setInput] = useState({
-    name: "",
-  });
-  const { user, setUser } = useAuth();
+  const [user] = useAuthState(auth);
 
-  const { handleSubmit, control, reset } = useForm<IFormValues>({
+  const { handleSubmit, control } = useForm<IFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
       password: '',
-      username: ''
+      email: ''
     }
   })
 
-  const handleLogin = () => {
-    localStorage.setItem("user", JSON.stringify(input));
-    setUser({ name: input.name, role: 'admin' });
-    navigate('/home')
-  };
-
-  const submit = () => {
-    console.log('teste')
+  const submit: SubmitHandler<IFormValues> = (data) => {
+    if (data) {
+      signInWithEmailAndPassword(auth, data.email, data.password)
+        .then(() => {
+          navigate('/home')
+        })
+    }
   }
 
   useEffect(() => {
@@ -51,11 +49,11 @@ const Login = () => {
             <Flex>
               <Controller
                 control={control}
-                name='username'
+                name='email'
                 render={({ field }) => (
                   <TextField
                     type="text"
-                    placeholder="Usuário"
+                    placeholder="E-mail"
                     {...field}
                   />
                 )} />
@@ -66,14 +64,14 @@ const Login = () => {
                 name='password'
                 render={({ field }) => (
                   <TextField
-                    type="text"
+                    type="password"
                     placeholder="Senha"
                     {...field}
                   />
                 )} />
             </Flex>
             <Flex css={{ width: '100%' }}>
-              <Button style={{ width: '100%' }} variant='contained' onClick={handleLogin}>Login</Button>
+              <Button style={{ width: '100%' }} variant='contained' type='submit'>Login</Button>
             </Flex>
             <Flex css={{ width: '100%' }}>
               <Button style={{ width: '100%' }} variant='contained' onClick={() => navigate('/signup')}>Cadastrar-se</Button>

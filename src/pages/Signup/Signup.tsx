@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../../providers/auth";
 import { Flex } from "../../components/Flex";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
@@ -7,25 +6,44 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InferType } from "yup";
 import { schema } from "./schema";
+import { auth, db } from "../../utils/firebaseUtils";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { SubmitHandler } from "react-hook-form/dist/types";
+import { addDoc, collection } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type IFormValues = InferType<typeof schema>;
 
 const Signup = () => {
   const navigate = useNavigate()
-  const { user, setUser } = useAuth();
+  const [user, loading, error] = useAuthState(auth);
 
   const { handleSubmit, control, formState: { errors } } = useForm<IFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
+      name: '',
       password: '',
-      username: '',
       email: '',
       confirmEmail: ''
     }
   })
 
-  const submit = () => {
-    console.log('teste')
+  const onSubmit: SubmitHandler<IFormValues> = async (data) => {
+    await createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        addDoc(collection(db, "users"), {
+          uid: user.uid,
+          name: data.name,
+          authProvider: "local",
+          email: data.email,
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   }
 
   useEffect(() => {
@@ -38,32 +56,18 @@ const Signup = () => {
         <Typography variant='h2' color='#0092EE'>
           Mangas Project
         </Typography>
-        <form onSubmit={handleSubmit(submit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Flex direction='column' align='center' css={{ gap: '16px' }}>
             <Flex>
               <Controller
                 control={control}
-                name='username'
+                name='name'
                 render={({ field }) => (
                   <TextField
                     type="text"
-                    placeholder="Usuário"
-                    error={!!errors?.username?.message}
-                    helperText={errors?.username?.message}
-                    {...field}
-                  />
-                )} />
-            </Flex>
-            <Flex>
-              <Controller
-                control={control}
-                name='password'
-                render={({ field }) => (
-                  <TextField
-                    type="text"
-                    placeholder="Senha"
-                    error={!!errors?.password?.message}
-                    helperText={errors?.password?.message}
+                    placeholder="Usuarío"
+                    error={!!errors?.name?.message}
+                    helperText={errors?.name?.message}
                     {...field}
                   />
                 )} />
@@ -92,6 +96,20 @@ const Signup = () => {
                     placeholder="Confirme o e-mail"
                     error={!!errors?.confirmEmail?.message}
                     helperText={errors?.confirmEmail?.message}
+                    {...field}
+                  />
+                )} />
+            </Flex>
+            <Flex>
+              <Controller
+                control={control}
+                name='password'
+                render={({ field }) => (
+                  <TextField
+                    type="password"
+                    placeholder="Senha"
+                    error={!!errors?.password?.message}
+                    helperText={errors?.password?.message}
                     {...field}
                   />
                 )} />

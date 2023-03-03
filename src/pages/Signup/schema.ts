@@ -1,10 +1,12 @@
 import { object, ref, string } from "yup";
 
 export const schema = object({
-  username: string().required("Usuário inválido."),
+  name: string().required("É obrigatório inserir um nome de usuarío."),
   password: string().required("Senha inválida."),
-  email: string().email("E-mail inválido!").required("E-mail é obrigatório."),
+  email: string()
+    .email("E-mail inválido!")
+    .required("É obrigatório inserir um e-mail."),
   confirmEmail: string()
-    .oneOf([ref("email"), null], "Confirmação de e-mail diferente do e-mail!")
-    .required("required"),
+    .oneOf([ref("email"), null], "Os e-mails não conferem.")
+    .required("É obrigatório inserir uma confirmação de e-mail."),
 });
