@@ -34,10 +34,6 @@ const Login = () => {
     }
   }
 
-  useEffect(() => {
-    if (user) navigate('/home')
-  }, [user])
-
   return (
     <Flex align='center' justify='center' css={{ width: '100vw', height: 'calc(100vh - 16px)', maxWidth: '100%' }}>
       <Flex direction='column' align='center' css={{ gap: '32px' }}>
