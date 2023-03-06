@@ -3,4 +3,5 @@ export type Manga = {
   isFinished: boolean;
   name: string;
   id: string;
+  cover: string;
 };
