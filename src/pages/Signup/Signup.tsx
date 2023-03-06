@@ -9,14 +9,14 @@ import { schema } from "./schema";
 import { auth, db } from "../../utils/firebaseUtils";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { SubmitHandler } from "react-hook-form/dist/types";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 type IFormValues = InferType<typeof schema>;
 
 const Signup = () => {
   const navigate = useNavigate()
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   const { handleSubmit, control, formState: { errors } } = useForm<IFormValues>({
     resolver: yupResolver(schema),
@@ -32,12 +32,13 @@ const Signup = () => {
     await createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        addDoc(collection(db, "users"), {
+        setDoc(doc(db, `users`, user.uid), {
           uid: user.uid,
           name: data.name,
           authProvider: "local",
           email: data.email,
-        });
+        })
+        navigate('/home');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -45,10 +46,6 @@ const Signup = () => {
         console.log(errorCode, errorMessage);
       });
   }
-
-  useEffect(() => {
-    if (user) navigate('/home')
-  }, [user])
 
   return (
     <Flex align='center' justify='center' css={{ width: '100vw', height: 'calc(100vh - 16px)', maxWidth: '100%' }}>
@@ -117,7 +114,6 @@ const Signup = () => {
             <Flex css={{ width: '100%' }}>
               <Button style={{ width: '100%' }} variant='contained' type='submit'>Cadastrar-se</Button>
             </Flex>
-
           </Flex>
         </form>
       </Flex>
