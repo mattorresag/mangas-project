@@ -1,18 +1,29 @@
 import { Button, Typography } from '@mui/material';
 import { signOut, User } from 'firebase/auth';
-import { useEffect } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../utils/firebaseUtils';
+import { auth, db } from '../utils/firebaseUtils';
 import { Flex } from './Flex';
 
 export const Header = (): JSX.Element => {
   const navigate = useNavigate()
   const [user] = useAuthState(auth)
+  const [isAdmin, setAdmin] = useState(false);
 
   const handleLogout = () => {
-    signOut(auth);
+    signOut(auth).then(() => navigate('/'));
   }
+
+  useEffect(() => {
+    const transactionsRef = doc(db, `users/${user?.uid}`);
+    const docSnap = getDoc(transactionsRef);
+    docSnap.then((value) => {
+      setAdmin(value.get('role') === 'admin')
+    }
+    )
+  }, []);
 
   return (
     <Flex align='center' gap='16' css={{ padding: '16px', width: 'calc(100vw - 16px)', position: 'fixed', top: 0, height: `100px`, background: 'AliceBlue' }} justify='between'>
@@ -23,7 +34,7 @@ export const Header = (): JSX.Element => {
         <Typography>
           {user?.email}
         </Typography>
-        {user?.email && (
+        {isAdmin && (
           <Button onClick={() => navigate('/panel')}>
             Acessar painel
           </Button>
