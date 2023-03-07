@@ -4,4 +4,6 @@ export type Manga = {
   name: string;
   id: string;
   cover: string;
+  manganato_id: string;
+  lastRead?: number;
 };
