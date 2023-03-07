@@ -37,7 +37,7 @@ const theme = createTheme({
 
 function App() {
   const [user, loading] = useAuthState(auth)
-  const [isAdmin, setAdmin] = useState(false);
+  const [isAdmin, setAdmin] = useState<boolean>(false);
 
   useEffect(() => {
     const transactionsRef = doc(db, `users/${user?.uid}`);
@@ -61,7 +61,7 @@ function App() {
               <Signup />
             </ProtectedRoute>} />
           <Route path='/panel' element={
-            <ProtectedRoute isAuthenticated={isAdmin} redirect={!!user ? '/home' : '/'} loading={loading}>
+            <ProtectedRoute isAuthenticated={!!isAdmin} redirect={!!user ? '/home' : '/'} loading={loading}>
               <CreateMangas />
             </ProtectedRoute>
           } />
