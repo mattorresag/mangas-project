@@ -1,11 +1,12 @@
-import { Avatar, Typography } from '@mui/material';
-import React from 'react';
+import { Avatar, Button, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { Manga } from '../../types/manga';
 import { Flex } from '../Flex';
 interface Props {
   manga: Manga;
+  handleSelectManga: (manga: Manga | null) => void;
 }
-export const MangaItem = ({ manga }: Props): JSX.Element => {
+export const MangaItem = ({ manga, handleSelectManga }: Props): JSX.Element => {
   return (
     <Flex align='center' justify='between' css={{ gap: '8px', width: '100%' }}>
       <Flex align='center' css={{ gap: '16px', width: '30%' }}>
@@ -26,6 +27,10 @@ export const MangaItem = ({ manga }: Props): JSX.Element => {
           Em Andamento
         </Typography>
       )}
+      <Button onClick={() => handleSelectManga(manga)
+      }>
+        <AddIcon />
+      </Button>
     </Flex>
   );
 }
