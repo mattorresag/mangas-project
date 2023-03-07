@@ -17,7 +17,8 @@ export const CreateMangas = () => {
     defaultValues: {
       isFinished: false,
       chapters: 0,
-      name: ''
+      name: '',
+      manganato_id: ''
     }
   })
 
@@ -27,6 +28,7 @@ export const CreateMangas = () => {
       name: data.name,
       chapters: data.chapters,
       isFinished: data.isFinished,
+      manganato_id: data.manganato_id
     });
     reset({ isFinished: false, name: '', chapters: null });
   }
@@ -58,6 +60,13 @@ export const CreateMangas = () => {
               />
             </Flex>
             <Flex align='center' justify='center' css={{ gap: '16px' }}>
+              <Controller
+                name='manganato_id'
+                control={control}
+                render={({ field }) => (
+                  <TextField placeholder='ID Manganato' {...field} />
+                )}
+              />
               <Typography>
                 Finalizado?
               </Typography>
