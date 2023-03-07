@@ -15,7 +15,7 @@ export const Home = (): JSX.Element => {
   const [mangas, setMangas] = useState<Manga[]>([])
 
   useEffect(() => {
-    const transactionsRef = collection(db, `user/${user?.uid}/mangas`);
+    const transactionsRef = collection(db, `users/${user?.uid}/mangas`);
     const q = query(transactionsRef);
     const unsub = onSnapshot(
       q,
