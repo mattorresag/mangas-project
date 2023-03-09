@@ -1,29 +1,18 @@
 import { Button, Typography } from '@mui/material';
-import { signOut, User } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { signOut } from 'firebase/auth';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth, db } from '../utils/firebaseUtils';
+import { UserContext } from '../provider/userProvider';
+import { auth } from '../utils/firebaseUtils';
 import { Flex } from './Flex';
 
 export const Header = (): JSX.Element => {
   const navigate = useNavigate()
-  const [user] = useAuthState(auth)
-  const [isAdmin, setAdmin] = useState(false);
+  const { currentUser } = useContext(UserContext);
 
   const handleLogout = () => {
     signOut(auth).then(() => navigate('/'));
   }
-
-  useEffect(() => {
-    const transactionsRef = doc(db, `users/${user?.uid}`);
-    const docSnap = getDoc(transactionsRef);
-    docSnap.then((value) => {
-      setAdmin(value.get('role') === 'admin')
-    }
-    )
-  }, []);
 
   return (
     <Flex align='center' gap='16' css={{ padding: '16px', width: 'calc(100vw - 16px)', position: 'fixed', top: 0, height: `100px`, background: 'AliceBlue' }} justify='between'>
@@ -32,9 +21,9 @@ export const Header = (): JSX.Element => {
       </Typography>
       <Flex align='center' css={{ gap: '32px' }}>
         <Typography>
-          {user?.email}
+          {currentUser?.email}
         </Typography>
-        {isAdmin && (
+        {currentUser?.role === `admin` && (
           <Button onClick={() => navigate('/panel')}>
             Acessar painel
           </Button>
