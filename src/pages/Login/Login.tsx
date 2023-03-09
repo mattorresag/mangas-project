@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { Flex } from "../../components/Flex";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
@@ -9,13 +8,11 @@ import { schema } from "./schema";
 import { SubmitHandler } from "react-hook-form/dist/types";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../utils/firebaseUtils";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 type IFormValues = InferType<typeof schema>;
 
 const Login = () => {
   const navigate = useNavigate()
-  const [user] = useAuthState(auth);
 
   const { handleSubmit, control } = useForm<IFormValues>({
     resolver: yupResolver(schema),

@@ -1,16 +1,16 @@
 import { Typography, TextField, Button } from '@mui/material';
 import { addDoc, collection, onSnapshot, query } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Flex } from '../../components/Flex';
 import { Header } from '../../components/Header';
 import { Manga } from '../../types/manga';
-import { auth, db } from '../../utils/firebaseUtils';
+import { db } from '../../utils/firebaseUtils';
 import { MangaItem } from '../../components/Manga/MangaItem';
 import Dialog from '@mui/material/Dialog/Dialog';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { InferType, number, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { UserContext } from '../../provider/userProvider';
 
 const schema = object({
   lastRead: number()
@@ -22,7 +22,7 @@ const schema = object({
 type IFormValues = InferType<typeof schema>;
 
 export const MangaList = (): JSX.Element => {
-  const [user] = useAuthState(auth)
+  const { currentUser } = useContext(UserContext);
   const [mangas, setMangas] = useState<Manga[]>([])
   const [selectedManga, setSelectedManga] = useState<Manga | null>();
 
@@ -59,7 +59,7 @@ export const MangaList = (): JSX.Element => {
 
   const submit: SubmitHandler<IFormValues> = (data) => {
     if (data) {
-      addDoc(collection(db, `users/${user?.uid}/mangas`), {
+      addDoc(collection(db, `users/${currentUser?.uid}/mangas`), {
         name: selectedManga?.name,
         id: selectedManga?.id,
         cover: selectedManga?.cover,
