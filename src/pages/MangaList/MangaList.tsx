@@ -11,6 +11,9 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 import { InferType, number, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UserContext } from '../../provider/userProvider';
+import { StyledTypography } from '../../ui/Typography';
+import { Layout } from '../../ui/Layout';
+import { StyledButton } from '../../ui/Button';
 
 const schema = object({
   lastRead: number()
@@ -71,11 +74,11 @@ export const MangaList = (): JSX.Element => {
 
   return (
     <>
-      <Flex direction='column' align='center' justify='center' css={{ width: '100vw', height: 'calc(100vh - 16px)', maxWidth: '100%', gap: '32px' }}>
+      <Layout>
         <Header />
-        <Typography variant='h2' color='#0092EE'>
+        <StyledTypography variant='h2'>
           Mangás
-        </Typography>
+        </StyledTypography>
         <Flex direction='column' css={{ width: '60vw', gap: '16px', maxHeight: '50vh', overflow: 'auto', position: 'relative' }}>
           <Flex align='center' justify='between' css={{ gap: '8px', width: '100%', position: 'sticky', top: '0', left: '0', background: 'red', zIndex: 10 }}>
             <Flex align='center' css={{ gap: '16px', width: '30%' }}>
@@ -97,12 +100,12 @@ export const MangaList = (): JSX.Element => {
             <MangaItem handleSelectManga={handleSelectManga} manga={manga} />
           ))}
         </Flex>
-      </Flex>
+      </Layout>
       <Dialog onClose={() => setSelectedManga(null)} open={!!selectedManga}>
         <Flex direction='column' align='center' css={{ borderRadius: '16px', width: '30vw', height: '100%', gap: '16px', padding: '8px' }}>
-          <Typography variant='h4' color='#0092EE'>
+          <StyledTypography variant='h4'>
             {selectedManga?.name}
-          </Typography>
+          </StyledTypography>
           <form onSubmit={handleSubmit(submit)}>
             <Flex direction='column' css={{ gap: '16px', width: '100%' }}>
               <Flex css={{ width: '100%' }}>
@@ -121,9 +124,9 @@ export const MangaList = (): JSX.Element => {
                   )} />
               </Flex>
               <Flex css={{ width: '100%' }}>
-                <Button type='submit' variant='contained'>
+                <StyledButton type='submit' variant='contained'>
                   Adicionar mangá a minha lista
-                </Button>
+                </StyledButton>
               </Flex>
             </Flex>
           </form>

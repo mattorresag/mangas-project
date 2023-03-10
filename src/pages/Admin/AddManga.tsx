@@ -3,11 +3,14 @@ import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../../utils/firebaseUtils';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, TextField, Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import { schema } from './schema';
 import { InferType } from 'yup';
 import { Header } from '../../components/Header';
+import { StyledTypography } from '../../ui/Typography';
+import { Layout } from '../../ui/Layout';
+import { StyledButton } from '../../ui/Button';
 
 type IFormValues = InferType<typeof schema>;
 
@@ -35,11 +38,11 @@ export const CreateMangas = () => {
 
 
   return (
-    <Flex direction='column' align='center' justify='center' css={{ width: '100vw', height: 'calc(100vh - 16px)', maxWidth: '100%', gap: '32px' }}>
+    <Layout>
       <Header />
-      <Typography variant='h2' color='#0092EE'>
+      <StyledTypography variant='h2'>
         Adicionar novo mangá
-      </Typography>
+      </StyledTypography>
       <Flex align='center' justify='center'>
         <form onSubmit={handleSubmit(submitManga)}>
           <Flex direction='column' css={{ gap: '16px' }}>
@@ -78,12 +81,12 @@ export const CreateMangas = () => {
                 )}
               />
             </Flex>
-            <Button variant='contained' type='submit'>
+            <StyledButton variant='contained' type='submit'>
               Enviar
-            </Button>
+            </StyledButton>
           </Flex>
         </form>
       </Flex>
-    </Flex>
+    </Layout>
   )
 }

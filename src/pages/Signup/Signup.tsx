@@ -9,6 +9,9 @@ import { auth, db } from "../../utils/firebaseUtils";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { SubmitHandler } from "react-hook-form/dist/types";
 import { doc, setDoc } from "firebase/firestore";
+import { StyledTypography } from "../../ui/Typography";
+import { Layout } from "../../ui/Layout";
+import { StyledButton } from "../../ui/Button";
 
 type IFormValues = InferType<typeof schema>;
 
@@ -45,11 +48,11 @@ const Signup = () => {
   }
 
   return (
-    <Flex align='center' justify='center' css={{ width: '100vw', height: 'calc(100vh - 16px)', maxWidth: '100%' }}>
+    <Layout>
       <Flex direction='column' align='center' css={{ gap: '32px' }}>
-        <Typography variant='h2' color='#0092EE'>
+        <StyledTypography variant='h2'>
           Mangas Project
-        </Typography>
+        </StyledTypography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Flex direction='column' align='center' css={{ gap: '16px' }}>
             <Flex>
@@ -109,12 +112,12 @@ const Signup = () => {
                 )} />
             </Flex>
             <Flex css={{ width: '100%' }}>
-              <Button style={{ width: '100%' }} variant='contained' type='submit'>Cadastrar-se</Button>
+              <StyledButton style={{ width: '100%' }} variant='contained' type='submit'>Cadastrar-se</StyledButton>
             </Flex>
           </Flex>
         </form>
       </Flex>
-    </Flex>
+    </Layout>
   );
 };
 

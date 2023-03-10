@@ -1,7 +1,8 @@
-import { Avatar, Button, Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Manga } from '../../types/manga';
 import { Flex } from '../Flex';
+import { StyledButton } from '../../ui/Button';
 interface Props {
   manga: Manga;
   handleSelectManga: (manga: Manga | null) => void;
@@ -27,10 +28,10 @@ export const MangaItem = ({ manga, handleSelectManga }: Props): JSX.Element => {
           Em Andamento
         </Typography>
       )}
-      <Button onClick={() => handleSelectManga(manga)
+      <StyledButton onClick={() => handleSelectManga(manga)
       }>
         <AddIcon />
-      </Button>
+      </StyledButton>
     </Flex>
   );
 }

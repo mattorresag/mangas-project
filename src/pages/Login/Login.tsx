@@ -8,6 +8,9 @@ import { schema } from "./schema";
 import { SubmitHandler } from "react-hook-form/dist/types";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../utils/firebaseUtils";
+import { StyledTypography } from "../../ui/Typography";
+import { Layout } from "../../ui/Layout";
+import { StyledButton } from "../../ui/Button";
 
 type IFormValues = InferType<typeof schema>;
 
@@ -32,11 +35,11 @@ const Login = () => {
   }
 
   return (
-    <Flex align='center' justify='center' css={{ width: '100vw', height: 'calc(100vh - 16px)', maxWidth: '100%' }}>
+    <Layout>
       <Flex direction='column' align='center' css={{ gap: '32px' }}>
-        <Typography variant='h2' color='#0092EE'>
+        <StyledTypography variant='h2'>
           Mangas Project
-        </Typography>
+        </StyledTypography>
         <form onSubmit={handleSubmit(submit)}>
           <Flex direction='column' align='center' css={{ gap: '16px' }}>
             <Flex>
@@ -64,16 +67,16 @@ const Login = () => {
                 )} />
             </Flex>
             <Flex css={{ width: '100%' }}>
-              <Button style={{ width: '100%' }} variant='contained' type='submit'>Login</Button>
+              <StyledButton style={{ width: '100%' }} variant='contained' type='submit'>Login</StyledButton>
             </Flex>
             <Flex css={{ width: '100%' }}>
-              <Button style={{ width: '100%' }} variant='contained' onClick={() => navigate('/signup')}>Cadastrar-se</Button>
+              <StyledButton style={{ width: '100%' }} variant='contained' onClick={() => navigate('/signup')}>Cadastrar-se</StyledButton>
             </Flex>
 
           </Flex>
         </form>
       </Flex>
-    </Flex>
+    </Layout>
   );
 };
 
