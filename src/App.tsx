@@ -33,7 +33,7 @@ const theme = createTheme({
   typography: {
     fontFamily:
       'Rubik'
-  }
+  },
 })
 
 function App() {
@@ -47,7 +47,8 @@ function App() {
       setAdmin(value.get('role') === 'admin')
     }
     )
-  }, []);
+  }, [user]);
+
 
   return (
     <ThemeProvider theme={theme}>
