@@ -1,10 +1,13 @@
-import { Button, Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import { signOut } from 'firebase/auth';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../provider/userProvider';
+import { StyledButton } from '../ui/Button';
 import { auth } from '../utils/firebaseUtils';
 import { Flex } from './Flex';
+
+const defaultAvatar = 'https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png';
 
 export const Header = (): JSX.Element => {
   const navigate = useNavigate()
@@ -15,22 +18,27 @@ export const Header = (): JSX.Element => {
   }
 
   return (
-    <Flex align='center' gap='16' css={{ padding: '16px', width: 'calc(100vw - 16px)', position: 'fixed', top: 0, height: `100px`, background: 'AliceBlue' }} justify='between'>
-      <Typography color='Highlight' style={{ cursor: 'pointer' }} onClick={() => navigate('/home')}>
-        Home
-      </Typography>
-      <Flex align='center' css={{ gap: '32px' }}>
-        <Typography>
-          {currentUser?.email}
+    <Flex align='center' css={{ padding: '16px', width: '100vw', position: 'fixed', top: 0, height: `100px`, background: 'rgb(1, 42, 54)' }} justify='between'>
+      <Flex align='center' css={{ gap: '32px' }} >
+        <Typography variant='h5' color='#eae8ff' style={{ cursor: 'pointer' }} onClick={() => navigate('/home')}>
+          <strong>HOME</strong>
         </Typography>
         {currentUser?.role === `admin` && (
-          <Button onClick={() => navigate('/panel')}>
-            Acessar painel
-          </Button>
+          <Typography variant='h5' color='#eae8ff' style={{ cursor: 'pointer' }} onClick={() => navigate('/panel')}>
+            <strong>PAINEL</strong>
+          </Typography>
         )}
-        <Button variant='contained' onClick={handleLogout}>
-          Logout
-        </Button>
+      </Flex>
+      <Flex align='center' css={{ gap: '32px' }}>
+        <Flex align='center' css={{ gap: '8px' }}>
+          <Avatar src={currentUser?.avatar || defaultAvatar} />
+          <Typography variant='body1' color='#eae8ff'>
+            {currentUser?.name}
+          </Typography>
+        </Flex>
+        <StyledButton variant='contained' onClick={handleLogout}>
+          <strong>Logout</strong>
+        </StyledButton>
       </Flex>
     </Flex>
   );
