@@ -11,17 +11,20 @@ interface Props {
 
 type Context = {
   currentUser?: CurrentUser;
-  setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser | undefined>>
+  setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser | undefined>>;
+  loading: boolean;
 }
 
-export const UserContext = createContext<Context>({ currentUser: undefined, setCurrentUser: () => null });
+export const UserContext = createContext<Context>({ currentUser: undefined, setCurrentUser: () => null, loading: false });
 
 export const UserProvider = ({ children }: Props): JSX.Element => {
   const [user] = useAuthState(auth);
+  const [loading, setLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState<CurrentUser | undefined>(undefined);
 
   useEffect(() => {
     if (user) {
+      setLoading(true);
       const transactionsRef = doc(db, `users/${user?.uid}`);
       const docSnap = getDoc(transactionsRef);
       docSnap.then((value) => {
@@ -44,12 +47,14 @@ export const UserProvider = ({ children }: Props): JSX.Element => {
             console.log(error);
           }
         );
-      });
+      }).finally(() => {
+        setLoading(false)
+      })
     }
   }, [user, auth])
 
   return (
-    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+    <UserContext.Provider value={{ currentUser, setCurrentUser, loading }}>
       {children}
     </UserContext.Provider>
   );
