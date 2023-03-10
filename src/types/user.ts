@@ -5,5 +5,6 @@ export type CurrentUser = {
   name: string;
   role: "admin" | "user";
   uid: string;
+  avatar?: string;
   mangas?: Manga[];
 };
