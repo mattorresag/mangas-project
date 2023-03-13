@@ -40,7 +40,7 @@ export const MangaList = (): JSX.Element => {
   useEffect(() => {
     const transactionsRef = collection(db, `mangas`);
     const q = query(transactionsRef);
-    const unsub = onSnapshot(
+    onSnapshot(
       q,
       (snapShot) => {
         let list: Manga[] = [];
@@ -53,22 +53,19 @@ export const MangaList = (): JSX.Element => {
         console.log(error);
       }
     );
-
-    return () => {
-      unsub();
-    };
   }, []);
 
 
   const submit: SubmitHandler<IFormValues> = (data) => {
+    console.log(data)
     if (data) {
       addDoc(collection(db, `users/${currentUser?.uid}/mangas`), {
         name: selectedManga?.name,
         id: selectedManga?.id,
-        cover: selectedManga?.cover,
+        cover: selectedManga?.cover || '',
         chapter: selectedManga?.chapters,
         lastRead: data.lastRead
-      })
+      }).then(() => alert('foi')).catch(() => alert('deu bico'))
     }
   }
 
@@ -124,9 +121,9 @@ export const MangaList = (): JSX.Element => {
                   )} />
               </Flex>
               <Flex css={{ width: '100%' }}>
-                <StyledButton type='submit' variant='contained'>
+                <Button type='submit' variant='contained'>
                   Adicionar mangá a minha lista
-                </StyledButton>
+                </Button>
               </Flex>
             </Flex>
           </form>

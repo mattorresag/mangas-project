@@ -1,4 +1,4 @@
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, Button, styled, Typography } from '@mui/material';
 import { signOut } from 'firebase/auth';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -18,13 +18,13 @@ export const Header = (): JSX.Element => {
   }
 
   return (
-    <Flex align='center' css={{ padding: '16px', width: '100vw', position: 'fixed', top: 0, height: `100px`, background: 'rgb(1, 42, 54)' }} justify='between'>
+    <Flex align='center' css={{ padding: '16px', width: '100vw', position: 'fixed', top: 0, height: `100px`, background: '#293241' }} justify='between'>
       <Flex align='center' css={{ gap: '32px' }} >
-        <Typography variant='h5' color='#eae8ff' style={{ cursor: 'pointer' }} onClick={() => navigate('/home')}>
+        <Typography variant='h5' color='white' style={{ cursor: 'pointer' }} onClick={() => navigate('/home')}>
           <strong>HOME</strong>
         </Typography>
         {currentUser?.role === `admin` && (
-          <Typography variant='h5' color='#eae8ff' style={{ cursor: 'pointer' }} onClick={() => navigate('/panel')}>
+          <Typography variant='h5' color='white' style={{ cursor: 'pointer' }} onClick={() => navigate('/panel')}>
             <strong>PAINEL</strong>
           </Typography>
         )}
@@ -32,7 +32,7 @@ export const Header = (): JSX.Element => {
       <Flex align='center' css={{ gap: '32px' }}>
         <Flex align='center' css={{ gap: '8px' }}>
           <Avatar src={currentUser?.avatar || defaultAvatar} />
-          <Typography variant='body1' color='#eae8ff'>
+          <Typography variant='body1' color='white'>
             {currentUser?.name}
           </Typography>
         </Flex>
