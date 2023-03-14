@@ -1,37 +1,52 @@
-import { Avatar, Typography } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { Manga } from '../../types/manga';
-import { Flex } from '../Flex';
-import { StyledButton } from '../../ui/Button';
+import { Avatar, Typography } from "@mui/material";
+import { Manga } from "../../types/manga";
+import { StyledButton } from "../../ui/Button";
+import { Flex } from "../Flex";
+import AddIcon from "@mui/icons-material/Add";
 interface Props {
   manga: Manga;
-  handleSelectManga: (manga: Manga | null) => void;
+  handleSelectManga?: (manga: Manga) => void;
+  isCRUD?: boolean;
 }
-export const MangaItem = ({ manga, handleSelectManga }: Props): JSX.Element => {
+export const MangaItem = ({
+  manga,
+  handleSelectManga,
+  isCRUD = false,
+}: Props): JSX.Element => {
   return (
-    <Flex align='center' justify='between' css={{ gap: '8px', width: '100%' }}>
-      <Flex align='center' css={{ gap: '16px', width: '30%' }}>
+    <Flex
+      align="center"
+      justify="between"
+      css={{ gap: "8px", width: "100%", padding: "16px" }}
+    >
+      <Flex align="center" css={{ gap: "16px", width: "30%" }}>
         <Avatar src={manga.cover} />
-        <Typography fontFamily='Rubik'>
-          {manga.name}
+        <Typography color="#202632">
+          <strong>{manga.name}</strong>
         </Typography>
       </Flex>
-      <Typography fontFamily='Rubik'>
-        {manga.chapters} capítulos
-      </Typography>
-      {manga.isFinished ? (
-        <Typography fontFamily='Rubik' color='green'>
-          Finalizado
-        </Typography>
-      ) : (
-        <Typography fontFamily='Rubik' color='blue'>
-          Em Andamento
+      {!isCRUD && (
+        <Typography color="#202632">
+          <strong>Capítulo {manga.lastRead}</strong>
         </Typography>
       )}
-      <StyledButton onClick={() => handleSelectManga(manga)
-      }>
-        <AddIcon />
-      </StyledButton>
+      <Typography color="#202632">
+        <strong>{manga.chapters} capítulos</strong>
+      </Typography>
+      {manga.isFinished ? (
+        <Typography color="green">
+          <strong>Finalizado</strong>
+        </Typography>
+      ) : (
+        <Typography color="#083B7F">
+          <strong>Em Andamento</strong>
+        </Typography>
+      )}
+      {isCRUD && (
+        <StyledButton onClick={() => handleSelectManga?.(manga)}>
+          <AddIcon />
+        </StyledButton>
+      )}
     </Flex>
   );
-}
+};
