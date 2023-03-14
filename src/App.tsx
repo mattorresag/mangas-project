@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Route, Routes } from 'react-router'
 import { BrowserRouter, Navigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify';
 import { CreateMangas } from './pages/Admin/AddManga';
 import { Home } from './pages/Home/Home';
 import Login from './pages/Login/Login'
@@ -54,6 +55,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <UserProvider>
+          <ToastContainer />
+
           <Routes>
             <Route path='/' element={
               <ProtectedRoute isAuthenticated={!user} redirect='/home' loading={loading}>
