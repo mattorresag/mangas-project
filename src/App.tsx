@@ -5,14 +5,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Route, Routes } from "react-router";
 import { BrowserRouter, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { Panel } from "./pages/Admin/Panel";
-import { Home } from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
-import { MangaList } from "./pages/MangaList/MangaList";
+import { Panel } from "./pages/Admin";
+import { Home } from "./pages/Home";
+import Login from "./pages/Login";
 import Signup from "./pages/Signup/Signup";
 import { UserProvider } from "./provider/userProvider";
 import { auth, db } from "./utils/firebaseUtils";
 import "react-toastify/dist/ReactToastify.css";
+import { Mangas } from "./pages/Mangas";
 
 export type ProtectedRouteProps = {
   isAuthenticated?: boolean;
@@ -113,7 +113,7 @@ function App() {
               path="/mangas-list"
               element={
                 <ProtectedRoute loading={loading} isAuthenticated={!!user}>
-                  <MangaList />
+                  <Mangas />
                 </ProtectedRoute>
               }
             />
