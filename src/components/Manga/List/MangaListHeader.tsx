@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import React from "react";
-import { Flex } from "../Flex";
+import { Flex } from "../../Flex";
 interface Props {
   children: React.ReactNode;
   isCRUD?: boolean;
@@ -13,7 +13,7 @@ export const MangaListHeader = ({
     <Flex
       direction="column"
       css={{
-        width: "60vw",
+        width: "80vw",
         gap: "16px",
         maxHeight: "50vh",
         overflow: "auto",
@@ -44,29 +44,27 @@ export const MangaListHeader = ({
           </Typography>
         </Flex>
         {!isCRUD && (
-          <Flex css={{ width: "20%" }}>
+          <Flex css={{ width: "25%" }}>
             <Typography color="#202632">
               <strong>Último capítulo lido</strong>
             </Typography>
           </Flex>
         )}
-        <Flex css={{ width: "24%" }}>
+        <Flex css={{ width: "25%" }}>
           <Typography color="#202632">
             <strong>Número de capítulos</strong>
           </Typography>
         </Flex>
-        <Flex css={{ width: "24%" }}>
+        <Flex css={{ width: "25%" }}>
           <Typography color="#202632">
             <strong>Status</strong>
           </Typography>
         </Flex>
-        {isCRUD && (
-          <Flex css={{ width: "7%" }}>
-            <Typography>
-              <strong>Adicionar</strong>
-            </Typography>
-          </Flex>
-        )}
+        <Flex css={{ width: "7%" }}>
+          <Typography>
+            <strong>{isCRUD ? "Adicionar" : "Deletar"}</strong>
+          </Typography>
+        </Flex>
       </Flex>
       <Flex direction="column">{children}</Flex>
     </Flex>
