@@ -8,20 +8,16 @@ import { UserContext } from "../../provider/userProvider";
 import { StyledTypography } from "../../ui/Typography";
 import { StyledButton } from "../../ui/Button";
 import { Layout } from "../../ui/Layout";
-import { MangaItem } from "../../components/Manga/MangaItem";
-import { MangaListHeader } from "../../components/Manga/MangaListHeader";
+import { MangaItem } from "../../components/Manga/List/MangaItem";
+import { MangaListHeader } from "../../components/Manga/List/MangaListHeader";
 import { AddManga } from "../../components/Manga/AddManga";
 import { Manga } from "../../types/manga";
+import { MangaList } from "../../components/Manga/List/MangaList";
 
 export const Home = (): JSX.Element => {
   const { currentUser, loading } = useContext(UserContext);
   const navigate = useNavigate();
   const mangas = currentUser?.mangas;
-  const [selectedManga, setSelectedManga] = useState<Manga | null>();
-
-  const handleSelectManga = (manga: Manga | null) => {
-    setSelectedManga(manga);
-  };
 
   return (
     <>
@@ -32,22 +28,7 @@ export const Home = (): JSX.Element => {
           <CircularProgress size="100px" />
         ) : (
           <>
-            <MangaListHeader>
-              {mangas?.map((manga) => (
-                <Flex
-                  css={{
-                    background: "#98c1d9 ",
-                    "&:first-child": { marginTop: "-16px" },
-                    "&:nth-child(odd)": { background: "#6b8ead" },
-                  }}
-                >
-                  <MangaItem
-                    manga={manga}
-                    handleSelectedManga={handleSelectManga}
-                  />
-                </Flex>
-              ))}
-            </MangaListHeader>
+            <MangaList mangas={mangas} isHome />
             <StyledButton
               variant="contained"
               onClick={() => navigate("/mangas-list")}
@@ -60,11 +41,6 @@ export const Home = (): JSX.Element => {
           </>
         )}
       </Layout>
-      <AddManga
-        handleSelectedManga={handleSelectManga}
-        selectedManga={selectedManga}
-        isEditing
-      />
     </>
   );
 };

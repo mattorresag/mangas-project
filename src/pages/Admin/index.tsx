@@ -40,7 +40,7 @@ export const Panel = () => {
       cover: data.cover,
     })
       .then(() => {
-        toast("Mangá adicionado com sucesso!");
+        toast(`O mangá ${data.name} foi adicionado com sucesso!`);
         reset({
           isFinished: false,
           name: "",
@@ -49,7 +49,7 @@ export const Panel = () => {
           cover: "",
         });
       })
-      .catch(() => toast("Ocorreu um erro ao inserir o mangá."))
+      .catch(() => toast(`Ocorreu um erro ao adicionar o mangá ${data.name}.`))
       .finally(() => setIsLoading(false));
   };
 
