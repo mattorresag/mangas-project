@@ -1,17 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Dialog, TextField } from "@mui/material";
-import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
-import React, { useContext } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { UserContext } from "../../provider/userProvider";
 import { Manga } from "../../types/manga";
 import { StyledButton } from "../../ui/Button";
 import { StyledTypography } from "../../ui/Typography";
-import { db } from "../../utils/firebaseUtils";
 import { Flex } from "../Flex";
-import { toast } from "react-toastify";
 import { schema } from "./schema";
 import { InferType } from "yup";
+import { useHandleManga } from "../../hooks/useHandleManga";
 
 interface Props {
   handleSelectedManga: (manga: Manga | null) => void;
@@ -26,8 +22,6 @@ export const AddManga = ({
   selectedManga,
   isEditing = false,
 }: Props): JSX.Element => {
-  const { currentUser } = useContext(UserContext);
-
   const {
     handleSubmit,
     control,
@@ -36,44 +30,17 @@ export const AddManga = ({
     resolver: yupResolver(schema),
   });
 
+  const { handleAddManga, handleUpdateManga } = useHandleManga({
+    selectedManga,
+    handleSelectedManga,
+  });
+
   const submit: SubmitHandler<IFormValues> = (data) => {
     if (data) {
       if (isEditing) {
-        updateDoc(
-          doc(db, `users/${currentUser?.uid}/mangas/${selectedManga?.name}`),
-          {
-            lastRead: data.lastRead,
-          }
-        )
-          .then(() => toast("Último capítulo lido alterado com sucesso!"))
-          .catch(() =>
-            toast("Ocorreu um erro alterar o último capítulo.", {
-              type: "error",
-            })
-          )
-          .finally(() => handleSelectedManga(null));
+        handleUpdateManga({ lastRead: data.lastRead });
       } else {
-        setDoc(
-          doc(
-            db,
-            `users/${currentUser?.uid}/mangas/`,
-            selectedManga?.name || ""
-          ),
-          {
-            name: selectedManga?.name,
-            id: selectedManga?.id,
-            cover: selectedManga?.cover || "",
-            chapters: selectedManga?.chapters,
-            lastRead: data.lastRead,
-          }
-        )
-          .then(() => toast("Mangá adicionado à sua lista com sucesso!"))
-          .catch(() =>
-            toast("Ocorreu um erro ao adicionar o mangá à sua lista.", {
-              type: "error",
-            })
-          )
-          .finally(() => handleSelectedManga(null));
+        handleAddManga({ lastRead: data.lastRead });
       }
     }
   };
