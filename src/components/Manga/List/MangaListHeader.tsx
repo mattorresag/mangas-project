@@ -60,9 +60,11 @@ export const MangaListHeader = ({
             <strong>Status</strong>
           </Typography>
         </Flex>
+        <Flex css={{ width: "7%" }} />
+
         <Flex css={{ width: "7%" }}>
           <Typography>
-            <strong>{isCRUD ? "Adicionar" : "Deletar"}</strong>
+            <strong>{isCRUD ? "Adicionar" : ""}</strong>
           </Typography>
         </Flex>
       </Flex>

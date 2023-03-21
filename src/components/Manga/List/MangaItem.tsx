@@ -10,6 +10,7 @@ import { db } from "../../../utils/firebaseUtils";
 import { useContext, useState } from "react";
 import { UserContext } from "../../../provider/userProvider";
 import { toast } from "react-toastify";
+import UpdateIcon from "@mui/icons-material/Update";
 import axios from "axios";
 interface Props {
   manga: Manga;
@@ -46,7 +47,7 @@ export const MangaItem = ({
       .get(
         "https://corsproxy.io/?" +
           encodeURIComponent(
-            `https://api.mangadex.org/manga/${manga.manganato_id}/feed?order[createdAt]=desc`
+            `https://api.mangadex.org/manga/${manga.mangadex_id}/feed?order[createdAt]=desc`
           ),
         {
           headers: {
@@ -147,19 +148,15 @@ export const MangaItem = ({
         </Flex>
       )}
       <Flex css={{ width: "7%" }}>
-        {isCRUD ? (
-          <StyledButton onClick={() => handleSelectedManga?.(manga)}>
-            <AddIcon />
-          </StyledButton>
-        ) : (
+        {!isCRUD && (
           <StyledButton
-            onClick={() => deleteManga()}
+            onClick={() => updateLastChapter()}
             size="small"
-            style={{ background: "#f44336" }}
+            style={{ background: "green" }}
             variant="contained"
             disabled={isLoading}
           >
-            <DeleteIcon />
+            <UpdateIcon />
           </StyledButton>
         )}
       </Flex>
@@ -170,9 +167,9 @@ export const MangaItem = ({
           </StyledButton>
         ) : (
           <StyledButton
-            onClick={() => updateLastChapter()}
+            onClick={() => deleteManga()}
             size="small"
-            style={{ background: "green" }}
+            style={{ background: "#f44336" }}
             variant="contained"
             disabled={isLoading}
           >
