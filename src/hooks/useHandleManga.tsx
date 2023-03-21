@@ -31,7 +31,7 @@ export const useHandleManga = ({
             cover: selectedManga?.cover || "",
             chapters: selectedManga?.chapters,
             lastRead,
-            manganato_id: selectedManga?.manganato_id,
+            mangadex_id: selectedManga?.mangadex_id,
           }
         )
           .then(() =>

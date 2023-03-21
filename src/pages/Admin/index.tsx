@@ -24,7 +24,7 @@ export const Panel = () => {
       isFinished: false,
       chapters: 0,
       name: "",
-      manganato_id: "",
+      mangadex_id: "",
       cover: "",
     },
   });
@@ -36,7 +36,7 @@ export const Panel = () => {
       name: data.name,
       chapters: data.chapters,
       isFinished: data.isFinished,
-      manganato_id: data.manganato_id,
+      mangadex_id: data.mangadex_id,
       cover: data.cover,
     })
       .then(() => {
@@ -45,7 +45,7 @@ export const Panel = () => {
           isFinished: false,
           name: "",
           chapters: null,
-          manganato_id: "",
+          mangadex_id: "",
           cover: "",
         });
       })
@@ -78,10 +78,10 @@ export const Panel = () => {
             </Flex>
             <Flex align="center" justify="center" css={{ gap: "16px" }}>
               <Controller
-                name="manganato_id"
+                name="mangadex_id"
                 control={control}
                 render={({ field }) => (
-                  <TextField placeholder="ID Manganato" {...field} />
+                  <TextField placeholder="ID MangaDex" {...field} />
                 )}
               />
               <Controller
