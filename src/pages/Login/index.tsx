@@ -11,13 +11,18 @@ import { auth } from "../../utils/firebaseUtils";
 import { StyledTypography } from "../../ui/Typography";
 import { Layout } from "../../ui/Layout";
 import { StyledButton } from "../../ui/Button";
+import { toast } from "react-toastify";
 
 type IFormValues = InferType<typeof schema>;
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const { handleSubmit, control } = useForm<IFormValues>({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<IFormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
       password: "",
@@ -27,9 +32,11 @@ const Login = () => {
 
   const submit: SubmitHandler<IFormValues> = (data) => {
     if (data) {
-      signInWithEmailAndPassword(auth, data.email, data.password).then(() => {
-        navigate("/home");
-      });
+      signInWithEmailAndPassword(auth, data.email, data.password)
+        .then(() => {
+          navigate("/home");
+        })
+        .catch(() => toast("E-mail ou senha inválida!"));
     }
   };
 
@@ -37,23 +44,41 @@ const Login = () => {
     <Layout>
       <Flex direction="column" align="center" css={{ gap: "32px" }}>
         <StyledTypography variant="h2">Mangas Project</StyledTypography>
-        <form onSubmit={handleSubmit(submit)}>
-          <Flex direction="column" align="center" css={{ gap: "16px" }}>
-            <Flex>
+        <form onSubmit={handleSubmit(submit)} style={{ width: "300px" }}>
+          <Flex
+            direction="column"
+            align="center"
+            css={{ gap: "16px", width: "100%" }}
+          >
+            <Flex css={{ width: "100%" }}>
               <Controller
                 control={control}
                 name="email"
                 render={({ field }) => (
-                  <TextField type="text" placeholder="E-mail" {...field} />
+                  <TextField
+                    error={!!errors.email?.message}
+                    helperText={errors.email?.message}
+                    type="text"
+                    placeholder="E-mail"
+                    style={{ width: "100%" }}
+                    {...field}
+                  />
                 )}
               />
             </Flex>
-            <Flex>
+            <Flex css={{ width: "100%" }}>
               <Controller
                 control={control}
                 name="password"
                 render={({ field }) => (
-                  <TextField type="password" placeholder="Senha" {...field} />
+                  <TextField
+                    error={!!errors.password?.message}
+                    helperText={errors.password?.message}
+                    type="password"
+                    placeholder="Senha"
+                    style={{ width: "100%" }}
+                    {...field}
+                  />
                 )}
               />
             </Flex>
