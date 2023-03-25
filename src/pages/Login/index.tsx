@@ -36,7 +36,7 @@ const Login = () => {
         .then(() => {
           navigate("/home");
         })
-        .catch(() => toast("E-mail ou senha inválida!"));
+        .catch(() => toast("E-mail ou senha inválidos!"));
     }
   };
 
