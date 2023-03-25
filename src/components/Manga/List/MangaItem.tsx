@@ -1,4 +1,4 @@
-import { Avatar, Button, Typography } from "@mui/material";
+import { Avatar, Typography } from "@mui/material";
 import { Manga } from "../../../types/manga";
 import { StyledButton } from "../../../ui/Button";
 import { Flex } from "../../Flex";
@@ -12,16 +12,22 @@ import { UserContext } from "../../../provider/userProvider";
 import { toast } from "react-toastify";
 import UpdateIcon from "@mui/icons-material/Update";
 import axios from "axios";
+import createBreakpoint from "../../../hooks/useWindowSize";
 interface Props {
   manga: Manga;
   handleSelectedManga?: (manga: Manga | null) => void;
   isCRUD?: boolean;
 }
+
+const useBreakpoint = createBreakpoint();
+
 export const MangaItem = ({
   manga,
   handleSelectedManga,
   isCRUD = false,
 }: Props): JSX.Element => {
+  const breakpoint = useBreakpoint();
+  const isMobile = ["xs", "xxs"].includes(breakpoint);
   const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useContext(UserContext);
 
@@ -106,22 +112,33 @@ export const MangaItem = ({
     >
       <Flex align="center" css={{ gap: "16px", width: "30%" }}>
         <Avatar src={manga.cover} />
-        <Typography color="#202632">
+        <Typography color="#202632" style={{ wordBreak: "break-all" }}>
           <strong>{manga.name}</strong>
         </Typography>
       </Flex>
       {!isCRUD && (
-        <Flex align="center" css={{ width: "25%", gap: "16px" }}>
-          <Typography color="#202632">
-            <strong>Capítulo {manga.lastRead}</strong>
-          </Typography>
-          <StyledButton
-            onClick={() => handleSelectedManga?.(manga)}
-            size="small"
-            variant="contained"
-          >
-            <EditIcon />
-          </StyledButton>
+        <Flex
+          align="center"
+          css={{ width: "25%", gap: "16px" }}
+          direction={isMobile ? "column" : "row"}
+        >
+          <Flex css={{ width: "50%" }}>
+            <Typography color="#202632">
+              <strong>Capítulo {manga.lastRead}</strong>
+            </Typography>
+          </Flex>
+          <Flex css={{ width: "50%" }}>
+            <EditIcon
+              style={{
+                background: `#3d5a80`,
+                color: "white",
+                cursor: "pointer",
+                padding: "4px",
+                borderRadius: "4px",
+              }}
+              onClick={() => handleSelectedManga?.(manga)}
+            />
+          </Flex>
         </Flex>
       )}
       <Flex css={{ width: "25%" }}>
@@ -148,35 +165,46 @@ export const MangaItem = ({
           </Typography>
         </Flex>
       )}
-      <Flex css={{ width: "7%" }}>
-        {!isCRUD && (
-          <StyledButton
-            onClick={() => updateLastChapter()}
-            size="small"
-            style={{ background: "green" }}
-            variant="contained"
-            disabled={isLoading}
-          >
-            <UpdateIcon />
-          </StyledButton>
-        )}
-      </Flex>
-      <Flex css={{ width: "7%" }}>
-        {isCRUD ? (
-          <StyledButton onClick={() => handleSelectedManga?.(manga)}>
-            <AddIcon />
-          </StyledButton>
-        ) : (
-          <StyledButton
-            onClick={() => deleteManga()}
-            size="small"
-            style={{ background: "#f44336" }}
-            variant="contained"
-            disabled={isLoading}
-          >
-            <DeleteIcon />
-          </StyledButton>
-        )}
+      <Flex
+        css={{ width: "14%", gap: "8px" }}
+        direction={isMobile ? "column" : "row"}
+      >
+        <Flex css={{ width: "50%" }}>
+          {!isCRUD && (
+            <UpdateIcon
+              onClick={() => {
+                isLoading ? null : updateLastChapter();
+              }}
+              style={{
+                background: "green",
+                color: "white",
+                cursor: "pointer",
+                padding: "4px",
+                borderRadius: "4px",
+              }}
+            />
+          )}
+        </Flex>
+        <Flex css={{ width: "50%" }}>
+          {isCRUD ? (
+            <StyledButton onClick={() => handleSelectedManga?.(manga)}>
+              <AddIcon onClick={() => handleSelectedManga?.(manga)} />
+            </StyledButton>
+          ) : (
+            <DeleteIcon
+              style={{
+                background: `#f44336`,
+                color: "white",
+                cursor: "pointer",
+                padding: "4px",
+                borderRadius: "4px",
+              }}
+              onClick={() => {
+                isLoading ? null : deleteManga();
+              }}
+            />
+          )}
+        </Flex>
       </Flex>
     </Flex>
   );

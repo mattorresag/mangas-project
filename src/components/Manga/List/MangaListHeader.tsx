@@ -13,7 +13,7 @@ export const MangaListHeader = ({
     <Flex
       direction="column"
       css={{
-        width: "80vw",
+        width: "90vw",
         gap: "16px",
         maxHeight: "50vh",
         overflow: "auto",
@@ -37,14 +37,11 @@ export const MangaListHeader = ({
       >
         <Flex align="center" css={{ gap: "16px", width: "30%" }}>
           <Typography color="#202632">
-            <strong>Capa</strong>
-          </Typography>
-          <Typography color="#202632">
-            <strong>Nome do mangá</strong>
+            <strong>Mangá</strong>
           </Typography>
         </Flex>
         {!isCRUD && (
-          <Flex css={{ width: "25%" }}>
+          <Flex css={{ width: "25%", gap: "16px" }}>
             <Typography color="#202632">
               <strong>Último capítulo lido</strong>
             </Typography>
@@ -60,12 +57,12 @@ export const MangaListHeader = ({
             <strong>Status</strong>
           </Typography>
         </Flex>
-        <Flex css={{ width: "7%" }} />
-
-        <Flex css={{ width: "7%" }}>
-          <Typography>
-            <strong>{isCRUD ? "Adicionar" : ""}</strong>
-          </Typography>
+        <Flex css={{ width: "14%" }} justify="end">
+          <Flex css={{ width: "50%" }}>
+            <Typography>
+              <strong>{isCRUD ? "Adicionar" : ""}</strong>
+            </Typography>
+          </Flex>
         </Flex>
       </Flex>
       <Flex direction="column">{children}</Flex>
