@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../utils/firebaseUtils";
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { UserContext } from "../../../provider/userProvider";
 import { toast } from "react-toastify";
 import UpdateIcon from "@mui/icons-material/Update";
@@ -24,7 +24,6 @@ export const MangaItem = ({
 }: Props): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useContext(UserContext);
-  const [lastChapter, setLastChapter] = useState(0);
 
   const deleteManga = () => {
     if (window.confirm(`Deseja realmente deletar o mangá ${manga.name}?`)) {
@@ -47,7 +46,7 @@ export const MangaItem = ({
       .get(
         "https://corsproxy.io/?" +
           encodeURIComponent(
-            `https://api.mangadex.org/manga/${manga.mangadex_id}/feed?order[createdAt]=desc`
+            `https://api.mangadex.org/manga/${manga.mangadex_id}/feed?order[chapter]=desc`
           ),
         {
           headers: {
@@ -90,6 +89,14 @@ export const MangaItem = ({
         }
       );
   };
+
+  const availableChapter = useMemo(() => {
+    if (manga.lastRead === manga.chapters)
+      return { text: "Em dia!", color: "#083B7F" };
+    return manga.lastRead && manga.lastRead < manga.chapters
+      ? { text: "Tem capítulo disponível!", color: "#00695f" }
+      : { text: "Há uma divergência nos capítulos.", color: "#f44336" };
+  }, [manga]);
 
   return (
     <Flex
@@ -136,15 +143,9 @@ export const MangaItem = ({
         </Flex>
       ) : (
         <Flex css={{ width: "25%" }}>
-          {manga.chapters === manga.lastRead ? (
-            <Typography color="#083B7F">
-              <strong>Em dia!</strong>
-            </Typography>
-          ) : (
-            <Typography color="#00695f">
-              <strong>Tem capítulo disponível!</strong>
-            </Typography>
-          )}
+          <Typography color={availableChapter.color}>
+            <strong>{availableChapter.text}</strong>
+          </Typography>
         </Flex>
       )}
       <Flex css={{ width: "7%" }}>
