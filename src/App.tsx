@@ -13,6 +13,7 @@ import { UserProvider } from "./provider/userProvider";
 import { auth, db } from "./utils/firebaseUtils";
 import "react-toastify/dist/ReactToastify.css";
 import { Mangas } from "./pages/Mangas";
+import { MangaProvider } from "./provider/mangaProvider";
 
 export type ProtectedRouteProps = {
   isAuthenticated?: boolean;
@@ -64,60 +65,62 @@ function App() {
       <ToastContainer theme="dark" limit={5} />
       <BrowserRouter>
         <UserProvider>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute
-                  isAuthenticated={!user}
-                  redirect="/home"
-                  loading={loading}
-                >
-                  <Login />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/signup"
-              element={
-                <ProtectedRoute
-                  isAuthenticated={!user}
-                  redirect="/home"
-                  loading={loading}
-                >
-                  <Signup />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/panel"
-              element={
-                <ProtectedRoute
-                  isAuthenticated={!!isAdmin}
-                  redirect={!!user ? "/home" : "/"}
-                  loading={loading}
-                >
-                  <Panel />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/home"
-              element={
-                <ProtectedRoute loading={loading} isAuthenticated={!!user}>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/mangas-list"
-              element={
-                <ProtectedRoute loading={loading} isAuthenticated={!!user}>
-                  <Mangas />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
+          <MangaProvider>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute
+                    isAuthenticated={!user}
+                    redirect="/home"
+                    loading={loading}
+                  >
+                    <Login />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <ProtectedRoute
+                    isAuthenticated={!user}
+                    redirect="/home"
+                    loading={loading}
+                  >
+                    <Signup />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/panel"
+                element={
+                  <ProtectedRoute
+                    isAuthenticated={!!isAdmin}
+                    redirect={!!user ? "/home" : "/"}
+                    loading={loading}
+                  >
+                    <Panel />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/home"
+                element={
+                  <ProtectedRoute loading={loading} isAuthenticated={!!user}>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/mangas-list"
+                element={
+                  <ProtectedRoute loading={loading} isAuthenticated={!!user}>
+                    <Mangas />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </MangaProvider>
         </UserProvider>
       </BrowserRouter>
     </ThemeProvider>
