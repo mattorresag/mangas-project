@@ -104,6 +104,10 @@ export const MangaItem = ({
       : { text: "Há uma divergência nos capítulos.", color: "#f44336" };
   }, [manga]);
 
+  const isMangaAdded = useMemo(() => {
+    return !!currentUser?.mangas?.find((m) => m.name === manga.name);
+  }, [currentUser, manga]);
+
   return (
     <Flex
       align="center"
@@ -111,8 +115,12 @@ export const MangaItem = ({
       css={{ gap: "8px", width: "100%", padding: "16px" }}
     >
       <Flex align="center" css={{ gap: "16px", width: "30%" }}>
-        <Avatar src={manga.cover} />
-        <Typography color="#202632" style={{ wordBreak: "break-all" }}>
+        {!isMobile && <Avatar src={manga.cover} />}
+        <Typography
+          variant={isMobile ? "caption" : "body1"}
+          color="#202632"
+          style={{ wordBreak: "break-all" }}
+        >
           <strong>{manga.name}</strong>
         </Typography>
       </Flex>
@@ -121,10 +129,16 @@ export const MangaItem = ({
           align="center"
           css={{ width: "25%", gap: "16px" }}
           direction={isMobile ? "column" : "row"}
+          justify={isMobile ? "center" : "start"}
         >
-          <Flex css={{ width: "50%" }}>
-            <Typography color="#202632">
-              <strong>Capítulo {manga.lastRead}</strong>
+          <Flex css={{ width: "fit-content" }}>
+            <Typography
+              variant={isMobile ? "caption" : "body1"}
+              color="#202632"
+            >
+              <strong>
+                {!isMobile && "Capítulo"} {manga.lastRead}
+              </strong>
             </Typography>
           </Flex>
           <Flex css={{ width: "50%" }}>
@@ -142,25 +156,33 @@ export const MangaItem = ({
         </Flex>
       )}
       <Flex css={{ width: "25%" }}>
-        <Typography color="#202632">
-          <strong>{manga.chapters} capítulos</strong>
+        <Typography variant={isMobile ? "caption" : "body1"} color="#202632">
+          <strong>
+            {manga.chapters} {!isMobile && "capítulos"}
+          </strong>
         </Typography>
       </Flex>
       {isCRUD ? (
         <Flex css={{ width: "25%" }}>
           {manga.isFinished ? (
-            <Typography color="green">
+            <Typography variant={isMobile ? "caption" : "body1"} color="green">
               <strong>Finalizado</strong>
             </Typography>
           ) : (
-            <Typography color="#083B7F">
+            <Typography
+              variant={isMobile ? "caption" : "body1"}
+              color="#083B7F"
+            >
               <strong>Em Andamento</strong>
             </Typography>
           )}
         </Flex>
       ) : (
         <Flex css={{ width: "25%" }}>
-          <Typography color={availableChapter.color}>
+          <Typography
+            variant={isMobile ? "caption" : "body1"}
+            color={availableChapter.color}
+          >
             <strong>{availableChapter.text}</strong>
           </Typography>
         </Flex>
@@ -187,7 +209,10 @@ export const MangaItem = ({
         </Flex>
         <Flex css={{ width: "50%" }}>
           {isCRUD ? (
-            <StyledButton onClick={() => handleSelectedManga?.(manga)}>
+            <StyledButton
+              disabled={isMangaAdded}
+              onClick={() => handleSelectedManga?.(manga)}
+            >
               <AddIcon onClick={() => handleSelectedManga?.(manga)} />
             </StyledButton>
           ) : (

@@ -8,10 +8,6 @@ import { UserContext } from "../../provider/userProvider";
 import { StyledTypography } from "../../ui/Typography";
 import { StyledButton } from "../../ui/Button";
 import { Layout } from "../../ui/Layout";
-import { MangaItem } from "../../components/Manga/List/MangaItem";
-import { MangaListHeader } from "../../components/Manga/List/MangaListHeader";
-import { AddManga } from "../../components/Manga/AddManga";
-import { Manga } from "../../types/manga";
 import { MangaList } from "../../components/Manga/List/MangaList";
 
 export const Home = (): JSX.Element => {

@@ -12,8 +12,9 @@ import { StyledTypography } from "../../ui/Typography";
 import { Layout } from "../../ui/Layout";
 import { StyledButton } from "../../ui/Button";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import createBreakpoint from "../../hooks/useWindowSize";
+import { MangaContext } from "../../provider/mangaProvider";
 
 type IFormValues = InferType<typeof schema>;
 const useBreakpoint = createBreakpoint();
@@ -33,9 +34,19 @@ export const Panel = () => {
     },
   });
 
+  const { mangas } = useContext(MangaContext);
+
   const submitManga: SubmitHandler<IFormValues> = async (data, e) => {
     e?.preventDefault();
     setIsLoading(true);
+    const isMangaAlreadyAdded = mangas?.some(
+      (manga) => manga.name === data?.name
+    );
+    if (isMangaAlreadyAdded) {
+      toast(`O mangá ${data.name} já foi adicionado.`);
+      setIsLoading(false);
+      return;
+    }
     await setDoc(doc(db, "mangas", data.name), {
       name: data.name,
       chapters: data.chapters,

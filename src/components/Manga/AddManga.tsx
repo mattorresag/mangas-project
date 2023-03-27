@@ -36,12 +36,11 @@ export const AddManga = ({
   });
 
   const submit: SubmitHandler<IFormValues> = (data) => {
-    if (data) {
-      if (isEditing) {
-        handleUpdateManga({ lastRead: data.lastRead });
-      } else {
-        handleAddManga({ lastRead: data.lastRead });
-      }
+    if (!data) return;
+    if (isEditing) {
+      handleUpdateManga({ lastRead: data.lastRead });
+    } else {
+      handleAddManga({ lastRead: data.lastRead });
     }
   };
 
