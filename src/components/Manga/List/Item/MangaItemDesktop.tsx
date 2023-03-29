@@ -1,99 +1,28 @@
 import { Avatar, Typography } from "@mui/material";
-import { Manga } from "../../../types/manga";
-import { Flex } from "../../Flex";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../utils/firebaseUtils";
-import { useContext, useMemo, useState } from "react";
-import { UserContext } from "../../../provider/userProvider";
-import { toast } from "react-toastify";
+import { useContext, useMemo } from "react";
 import UpdateIcon from "@mui/icons-material/Update";
-import axios from "axios";
-import createBreakpoint from "../../../hooks/useWindowSize";
+import { Manga } from "../../../../types/manga";
+import { UserContext } from "../../../../provider/userProvider";
+import { Flex } from "../../../Flex";
+import { useHandleManga } from "../../../../hooks/useHandleManga";
 interface Props {
   manga: Manga;
   handleSelectedManga?: (manga: Manga | null) => void;
   isCRUD?: boolean;
 }
 
-const useBreakpoint = createBreakpoint();
-
-export const MangaItem = ({
+export const MangaItemDesktop = ({
   manga,
   handleSelectedManga,
   isCRUD = false,
 }: Props): JSX.Element => {
-  const breakpoint = useBreakpoint();
-  const isMobile = ["xs", "xxs"].includes(breakpoint);
-  const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useContext(UserContext);
 
-  const deleteManga = () => {
-    if (window.confirm(`Deseja realmente deletar o mangá ${manga.name}?`)) {
-      setIsLoading(true);
-      deleteDoc(doc(db, `users/${currentUser?.uid}/mangas/${manga.name}`))
-        .then(() =>
-          toast(`O mangá ${manga.name} foi deletado da sua lista com sucesso!`)
-        )
-        .catch(() =>
-          toast(
-            `Ocorreu um erro ao deletar o mangá ${manga.name} da sua lista.`
-          )
-        )
-        .finally(() => setIsLoading(false));
-    }
-  };
-
-  const updateLastChapter = () => {
-    axios
-      .get(
-        "https://corsproxy.io/?" +
-          encodeURIComponent(
-            `https://api.mangadex.org/manga/${manga.mangadex_id}/feed?order[chapter]=desc`
-          ),
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then(
-        (data: {
-          data: {
-            data: {
-              attributes: {
-                chapter: string;
-              };
-            }[];
-          };
-        }) => {
-          const newChapter = Number(
-            data?.data?.data?.[0]?.attributes?.chapter || 0
-          );
-          manga.chapters !== newChapter
-            ? updateDoc(
-                doc(db, `users/${currentUser?.uid}/mangas/${manga?.name}`),
-                {
-                  chapters: newChapter,
-                }
-              )
-                .then(() =>
-                  toast(
-                    `Último capítulo do mangá ${manga?.name} atualizado com sucesso!`
-                  )
-                )
-                .catch(() =>
-                  toast(
-                    `Ocorreu um erro ao atualizar o último capítulo do mangá ${manga?.name} `
-                  )
-                )
-            : toast("O capítulo já está atualizado!");
-        }
-      );
-  };
+  const { handleUpdateLastChapter, handleDeleteManga, isLoading } =
+    useHandleManga({});
 
   const availableChapter = useMemo(() => {
     if (manga.lastRead === manga.chapters)
@@ -114,9 +43,9 @@ export const MangaItem = ({
       css={{ gap: "8px", width: "100%", padding: "16px" }}
     >
       <Flex align="center" css={{ gap: "16px", width: "30%" }}>
-        {!isMobile && <Avatar src={manga.cover} />}
+        <Avatar src={manga.cover} />
         <Typography
-          variant={isMobile ? "caption" : "body1"}
+          variant="body1"
           color="#202632"
           style={{ wordBreak: "break-word" }}
         >
@@ -125,19 +54,14 @@ export const MangaItem = ({
       </Flex>
       {!isCRUD && (
         <Flex
-          align={isMobile ? "start" : "center"}
+          align="center"
           css={{ width: "25%", gap: "16px" }}
-          direction={isMobile ? "column" : "row"}
-          justify={"start"}
+          direction="row"
+          justify="start"
         >
           <Flex css={{ width: "fit-content" }}>
-            <Typography
-              variant={isMobile ? "caption" : "body1"}
-              color="#202632"
-            >
-              <strong>
-                {!isMobile && "Capítulo"} {manga.lastRead}
-              </strong>
+            <Typography variant="body1" color="#202632">
+              <strong>Capítulo {manga.lastRead}</strong>
             </Typography>
           </Flex>
           <Flex css={{ width: "50%" }}>
@@ -155,47 +79,39 @@ export const MangaItem = ({
         </Flex>
       )}
       <Flex css={{ width: "25%" }}>
-        <Typography variant={isMobile ? "caption" : "body1"} color="#202632">
-          <strong>
-            {manga.chapters} {!isMobile && "capítulos"}
-          </strong>
+        <Typography variant="body1" color="#202632">
+          <strong>{manga.chapters} capítulos</strong>
         </Typography>
       </Flex>
       {isCRUD ? (
         <Flex css={{ width: "25%" }}>
           {manga.isFinished ? (
-            <Typography variant={isMobile ? "caption" : "body1"} color="green">
+            <Typography variant="body1" color="green">
               <strong>Finalizado</strong>
             </Typography>
           ) : (
-            <Typography
-              variant={isMobile ? "caption" : "body1"}
-              color="#083B7F"
-            >
+            <Typography variant="body1" color="#083B7F">
               <strong>Em Andamento</strong>
             </Typography>
           )}
         </Flex>
       ) : (
         <Flex css={{ width: "25%" }}>
-          <Typography
-            variant={isMobile ? "caption" : "body1"}
-            color={availableChapter.color}
-          >
+          <Typography variant="body1" color={availableChapter.color}>
             <strong>{availableChapter.text}</strong>
           </Typography>
         </Flex>
       )}
       <Flex
         css={{ width: "14%", gap: isCRUD ? "0px" : "8px" }}
-        direction={isMobile ? "column" : "row"}
+        direction="row"
         align="center"
       >
         <Flex css={{ width: "50%" }}>
           {!isCRUD && (
             <UpdateIcon
               onClick={() => {
-                isLoading ? null : updateLastChapter();
+                isLoading ? null : handleUpdateLastChapter({ manga });
               }}
               style={{
                 background: "green",
@@ -233,7 +149,7 @@ export const MangaItem = ({
                 borderRadius: "4px",
               }}
               onClick={() => {
-                isLoading ? null : deleteManga();
+                isLoading ? null : handleDeleteManga({ manga });
               }}
             />
           )}
