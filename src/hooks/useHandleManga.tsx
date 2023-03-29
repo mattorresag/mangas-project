@@ -76,26 +76,29 @@ export const useHandleManga = ({
     manga: Manga;
     isUserManga?: boolean;
   }) => {
-    const deleteFromUserList = deleteDoc(
-      doc(db, `users/${currentUser?.uid}/mangas/${manga.name}`)
-    )
-      .then(() =>
-        toast(`O mangá ${manga.name} foi deletado da sua lista com sucesso!`)
-      )
-      .catch(() =>
-        toast(`Ocorreu um erro ao deletar o mangá ${manga.name} da sua lista.`)
-      )
-      .finally(() => setIsLoading(false));
+    const deleteFromUserList = () =>
+      deleteDoc(doc(db, `users/${currentUser?.uid}/mangas/${manga.name}`))
+        .then(() =>
+          toast(`O mangá ${manga.name} foi deletado da sua lista com sucesso!`)
+        )
+        .catch(() =>
+          toast(
+            `Ocorreu um erro ao deletar o mangá ${manga.name} da sua lista.`
+          )
+        )
+        .finally(() => setIsLoading(false));
 
-    const deleteFromMangaList = deleteDoc(doc(db, `mangas/${manga.name}`))
-      .then(() => toast(`O mangá ${manga.name} foi deletado com sucesso!`))
-      .catch(() => toast(`Ocorreu um erro ao deletar o mangá ${manga.name}.`))
-      .finally(() => setIsLoading(false));
+    const deleteFromMangaList = () =>
+      deleteDoc(doc(db, `mangas/${manga.name}`))
+        .then(() => toast(`O mangá ${manga.name} foi deletado com sucesso!`))
+        .catch(() => toast(`Ocorreu um erro ao deletar o mangá ${manga.name}.`))
+        .finally(() => setIsLoading(false));
 
     if (window.confirm(`Deseja realmente deletar o mangá ${manga.name}?`)) {
       setIsLoading(true);
-      isUserManga ? deleteFromUserList : deleteFromMangaList;
+      return isUserManga ? deleteFromUserList() : deleteFromMangaList();
     }
+    setIsLoading(false);
   };
 
   const handleUpdateLastChapter = ({ manga }: { manga: Manga }) => {
