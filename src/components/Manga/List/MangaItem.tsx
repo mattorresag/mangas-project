@@ -118,7 +118,7 @@ export const MangaItem = ({
         <Typography
           variant={isMobile ? "caption" : "body1"}
           color="#202632"
-          style={{ wordBreak: "break-all" }}
+          style={{ wordBreak: "break-word" }}
         >
           <strong>{manga.name}</strong>
         </Typography>
