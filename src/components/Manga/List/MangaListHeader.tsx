@@ -71,7 +71,7 @@ export const MangaListHeader = ({
             </Typography>
           </Flex>
         </Flex>
-        <Flex css={{ width: isMobile ? "6px" : "12px" }} />
+        {!isMobile && <Flex css={{ width: "12px" }} />}
       </Flex>
       <Flex
         direction="column"
