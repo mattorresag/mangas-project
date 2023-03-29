@@ -20,12 +20,10 @@ export const MangaListHeader = ({
       direction="column"
       css={{
         width: "90vw",
-        gap: "16px",
         maxHeight: "50vh",
-        overflowY: "auto",
-        overflowX: "hidden",
         position: "relative",
-        padding: "0 16px 16px",
+        boxShadow: "0px 0px 8px 0px rgba(0,0,0,0.75)",
+        borderRadius: "8px",
       }}
     >
       <Flex
@@ -36,6 +34,8 @@ export const MangaListHeader = ({
           width: "100%",
           padding: "16px",
           position: "sticky",
+          borderTopLeftRadius: "8px",
+          borderTopRightRadius: "8px",
           top: "0",
           left: "0",
           background: "rgb(61, 90, 128)",
@@ -75,7 +75,17 @@ export const MangaListHeader = ({
           </Flex>
         </Flex>
       </Flex>
-      <Flex direction="column">{children}</Flex>
+      <Flex
+        direction="column"
+        css={{
+          overflowY: "auto",
+          overflowX: "hidden",
+          borderBottomLeftRadius: "8px",
+          borderBottomRightRadius: "8px",
+        }}
+      >
+        {children}
+      </Flex>
     </Flex>
   );
 };

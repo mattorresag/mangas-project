@@ -20,9 +20,8 @@ export const MangaList = ({ mangas, isHome = false }: Props): JSX.Element => {
         {mangas?.map((manga) => (
           <Flex
             css={{
-              background: "rgb(152, 193, 217, 0.5)",
-              "&:first-child": { marginTop: "-16px" },
-              "&:nth-child(odd)": { background: "rgb(107, 142, 173,0.8)" },
+              background: "rgb(152, 193, 217, 0.2)",
+              "&:nth-child(odd)": { background: "rgb(107, 142, 173,0.4)" },
             }}
           >
             <MangaItem
