@@ -24,6 +24,8 @@ export const MangaListHeader = ({
         position: "relative",
         boxShadow: "0px 0px 16px 0px rgba(0,0,0,0.75)",
         borderRadius: "8px",
+        overflow: "hidden",
+        "div::-webkit-scrollbar": { display: "none" },
       }}
     >
       <Flex
@@ -66,20 +68,18 @@ export const MangaListHeader = ({
         </Flex>
         <Flex css={{ width: "14%" }} justify="end">
           <Flex css={{ width: "50%" }}>
-            <Typography variant={isMobile ? "caption" : "body1"}>
+            <Typography variant={isMobile ? "caption" : "body1"} color="white">
               {isCRUD ? "Add" : ""}
             </Typography>
           </Flex>
         </Flex>
-        {!isMobile && <Flex css={{ width: "12px" }} />}
       </Flex>
       <Flex
         direction="column"
         css={{
-          overflowY: "auto",
-          overflowX: "hidden",
           borderBottomLeftRadius: "8px",
           borderBottomRightRadius: "8px",
+          overflowY: "auto",
         }}
       >
         {children}
