@@ -22,7 +22,7 @@ export const MangaListHeader = ({
         width: "90vw",
         maxHeight: "50vh",
         position: "relative",
-        boxShadow: "0px 0px 8px 0px rgba(0,0,0,0.75)",
+        boxShadow: "0px 0px 16px 0px rgba(0,0,0,0.75)",
         borderRadius: "8px",
       }}
     >
@@ -38,42 +38,40 @@ export const MangaListHeader = ({
           borderTopRightRadius: "8px",
           top: "0",
           left: "0",
-          background: "rgb(61, 90, 128)",
+          background: "rgb(61, 90, 128, 0.9)",
           zIndex: 10,
         }}
       >
         <Flex align="center" css={{ gap: "16px", width: "30%" }}>
-          <Typography variant={isMobile ? "caption" : "body1"} color="#202632">
-            <strong>Mangá</strong>
+          <Typography variant={isMobile ? "caption" : "body1"} color="white">
+            Mangá
           </Typography>
         </Flex>
         {!isCRUD && (
           <Flex css={{ width: "25%", gap: "16px" }}>
-            <Typography
-              variant={isMobile ? "caption" : "body1"}
-              color="#202632"
-            >
-              <strong>{isMobile ? "Últ cap" : "Último capítulo lido"}</strong>
+            <Typography variant={isMobile ? "caption" : "body1"} color="white">
+              {isMobile ? "Últ cap" : "Último capítulo lido"}
             </Typography>
           </Flex>
         )}
         <Flex css={{ width: "25%" }}>
-          <Typography variant={isMobile ? "caption" : "body1"} color="#202632">
-            <strong>{isMobile ? "Nº Cap" : "Número de capítulos"}</strong>
+          <Typography variant={isMobile ? "caption" : "body1"} color="white">
+            {isMobile ? "Nº Cap" : "Número de capítulos"}
           </Typography>
         </Flex>
         <Flex css={{ width: "25%" }}>
-          <Typography variant={isMobile ? "caption" : "body1"} color="#202632">
-            <strong>Status</strong>
+          <Typography variant={isMobile ? "caption" : "body1"} color="white">
+            Status
           </Typography>
         </Flex>
         <Flex css={{ width: "14%" }} justify="end">
           <Flex css={{ width: "50%" }}>
             <Typography variant={isMobile ? "caption" : "body1"}>
-              <strong>{isCRUD ? "Add" : ""}</strong>
+              {isCRUD ? "Add" : ""}
             </Typography>
           </Flex>
         </Flex>
+        <Flex css={{ width: isMobile ? "6px" : "12px" }} />
       </Flex>
       <Flex
         direction="column"
