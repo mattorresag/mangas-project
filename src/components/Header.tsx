@@ -33,6 +33,7 @@ export const Header = (): JSX.Element => {
         top: 0,
         height: `100px`,
         background: "#293241",
+        zIndex: 11,
       }}
       justify="between"
     >
