@@ -14,6 +14,7 @@ export const MangaListHeader = ({
 }: Props): JSX.Element => {
   const breakpoint = useBreakpoint();
   const isMobile = ["xs", "xxs"].includes(breakpoint);
+
   return (
     <Flex
       direction="column"
@@ -21,7 +22,8 @@ export const MangaListHeader = ({
         width: "90vw",
         gap: "16px",
         maxHeight: "50vh",
-        overflow: "auto",
+        overflowY: "auto",
+        overflowX: "hidden",
         position: "relative",
         padding: "0 16px 16px",
       }}
@@ -68,7 +70,7 @@ export const MangaListHeader = ({
         <Flex css={{ width: "14%" }} justify="end">
           <Flex css={{ width: "50%" }}>
             <Typography variant={isMobile ? "caption" : "body1"}>
-              <strong>{isCRUD ? "Adicionar" : ""}</strong>
+              <strong>{isCRUD ? "Add" : ""}</strong>
             </Typography>
           </Flex>
         </Flex>

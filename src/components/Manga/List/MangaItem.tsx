@@ -1,6 +1,5 @@
 import { Avatar, Typography } from "@mui/material";
 import { Manga } from "../../../types/manga";
-import { StyledButton } from "../../../ui/Button";
 import { Flex } from "../../Flex";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -126,10 +125,10 @@ export const MangaItem = ({
       </Flex>
       {!isCRUD && (
         <Flex
-          align="center"
+          align={isMobile ? "start" : "center"}
           css={{ width: "25%", gap: "16px" }}
           direction={isMobile ? "column" : "row"}
-          justify={isMobile ? "center" : "start"}
+          justify={"start"}
         >
           <Flex css={{ width: "fit-content" }}>
             <Typography
@@ -188,8 +187,9 @@ export const MangaItem = ({
         </Flex>
       )}
       <Flex
-        css={{ width: "14%", gap: "8px" }}
+        css={{ width: "14%", gap: isCRUD ? "0px" : "8px" }}
         direction={isMobile ? "column" : "row"}
+        align="center"
       >
         <Flex css={{ width: "50%" }}>
           {!isCRUD && (
@@ -209,12 +209,20 @@ export const MangaItem = ({
         </Flex>
         <Flex css={{ width: "50%" }}>
           {isCRUD ? (
-            <StyledButton
-              disabled={isMangaAdded}
-              onClick={() => handleSelectedManga?.(manga)}
-            >
-              <AddIcon onClick={() => handleSelectedManga?.(manga)} />
-            </StyledButton>
+            <Flex css={{ width: "fit-content" }}>
+              <AddIcon
+                style={{
+                  background: `#3d5a80`,
+                  color: isMangaAdded ? "black" : "white",
+                  cursor: "pointer",
+                  padding: "4px",
+                  borderRadius: "4px",
+                }}
+                onClick={() => {
+                  isMangaAdded ? null : handleSelectedManga?.(manga);
+                }}
+              />
+            </Flex>
           ) : (
             <DeleteIcon
               style={{

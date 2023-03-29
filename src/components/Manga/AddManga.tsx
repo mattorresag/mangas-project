@@ -51,10 +51,10 @@ export const AddManga = ({
         align="center"
         css={{
           borderRadius: "16px",
-          width: "30vw",
+          width: "fit-content",
           height: "100%",
           gap: "16px",
-          padding: "8px",
+          padding: "32px",
         }}
       >
         <StyledTypography variant="h4">{selectedManga?.name}</StyledTypography>
