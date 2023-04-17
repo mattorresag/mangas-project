@@ -29,7 +29,7 @@ export const MangaItemMobile = ({
       return { text: "Em dia!", color: "#083B7F" };
     return manga.lastRead && manga.lastRead < manga.chapters
       ? { text: "Tem capítulo disponível!", color: "#00695f" }
-      : { text: "Há uma divergência nos capítulos.", color: "#f44336" };
+      : { text: "Erro.", color: "#f44336" };
   }, [manga]);
 
   const isMangaAdded = useMemo(() => {
